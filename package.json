@@ -1,7 +1,7 @@
 {
   "name": "hash-comparer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Compare 2 files by hash.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +19,17 @@
   "devDependencies": {
     "electron": "^8.2.2",
     "electron-builder": "^22.4.1"
+  },
+  "build": {
+    "appId": "net.fireturtle.hash-comparer",
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.ico",
+    }
+  },
+  "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   }
+
 }
