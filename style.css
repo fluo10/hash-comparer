@@ -1,0 +1,9 @@
+#gile-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.file-item {
+    width: 45%;
+    min-width: 300px;
+    height: 300px;
+}
