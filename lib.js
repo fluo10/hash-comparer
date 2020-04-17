@@ -1,20 +1,28 @@
 const crypto = require("crypto");
 const fs = require('fs');
+const path = require('path');
 const algorithm = 'sha1';
-const shasum = crypto.createHash(algorithm);
- 
-function get_hash_local(filename) { 
-    const s = fs.ReadStream(filename)
+var shasum;
+
+const electron = require('electron');
+const remote = electron.remote;
+function get_hash_local(filename, callback) { 
+    shasum = crypto.createHash(algorithm);
+    var s = fs.createReadStream(filename);
+    var hash;
     s.on('data', function(data) {
-        shasum.update(data)
+        shasum.update(data);
     })
     s.on('end', function(){
-        var hash = shasum.digest('hex')
-        console.log(hash + ' ' + filename)
+        hash = shasum.digest('hex');
+        if(callback){
+            callback(hash + ' ' + filename);
+        }
     })
+    //return (hash + ' ' + filename);
+
 }
 
-const filename = __dirname + "/index.html"
+console.log(get_hash_local(path.join(__dirname , "index.html")));
 
-
-console.log(get_hash_local(filename));
+module.exports.get_hash_local = get_hash_local;
