@@ -1,4 +1,4 @@
-#gile-list {
+#file-list {
     display: flex;
     flex-wrap: wrap;
 }
@@ -6,4 +6,7 @@
     width: 45%;
     min-width: 300px;
     height: 300px;
+}
+.ondragover {
+    background-color: gray;
 }

@@ -14,25 +14,29 @@ document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
     return false;
 }
-const fileItems = document.getElementsByClassName('file-item')
-fot(let i = 0; i < fileItem.length; i++) {
+let fileItems = document.getElementsByClassName('file-item')
+for( var i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
         remote.ipcRenderer.send('ondragstart', '/path/to/item')
     }?*/
-    fileItems[i].ondragover = function() {
+    let fileItem = fileItems[i];
+    fileItem.ondragover = function() {
+        fileItem.classList.add("ondragover");
         return false;
     };
     
-    fileItems[i].ondragleave = function() {
+    fileItem.ondragleave = function() {
+        fileItem.classList.remove("ondragover");
         return false;
     };
     
-    fileItems[i].ondragend = function() {
+    fileItem.ondragend = function() {
+        fileItem.classList.remove("ondragover");
         return false;
     };
     
-    fileItems[i].ondrop = function(e) {
+    fileItem.ondrop = function(e) {
         e.preventDefault();
         var file = e.dataTransfer.files[0];
         fileItems[i].innerText = file.path;

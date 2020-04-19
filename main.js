@@ -2,7 +2,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const ipcmain = electron.ipcMain;
+//const ipcmain = electron.ipcMain;
 const lib = require("./lib");
 
 function createWindow () {
@@ -46,9 +46,11 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+/*
 ipcMain.on('ondragstart', (event, filePath) => {
   event.sender.startDrag({
     file: filePath,
     icon: '/path/to/icon.png'
   })
-})
+})*/
