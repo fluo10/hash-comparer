@@ -2,7 +2,7 @@
 const electron = require('electron');
 const remote = electron.remote;
 const lib = remote.require('./lib');
-
+const ipcRenderer = remote.ipcRenderer;
 
 const filename = __dirname + "\\index.html";
 lib.get_hash_local(filename,function(result){
@@ -44,3 +44,10 @@ for( let i = 0; i < fileItems.length; i++ ) {
     };
     
 }
+
+ipcRenderer.on('return-hash', (event, hash) => {
+    console.log( 'Returned hash : ' + hash)
+})
+
+ipcRenderer.send('get-hash', "./index.html");
+
