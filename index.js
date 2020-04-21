@@ -15,7 +15,7 @@ document.ondragover = document.ondrop = function(e) {
     return false;
 }
 let fileItems = document.getElementsByClassName('file-item')
-for( var i = 0; i < fileItems.length; i++ ) {
+for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
         remote.ipcRenderer.send('ondragstart', '/path/to/item')
