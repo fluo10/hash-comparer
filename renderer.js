@@ -1,20 +1,20 @@
 //const fs = require('fs').remote
 const electron = require('electron');
 const remote = electron.remote;
-const lib = remote.require('./lib');
-const ipcRenderer = remote.ipcRenderer;
-
+//const lib = remote.require('./lib');
+const ipcRenderer = electron.ipcRenderer;
+/*
 const filename = __dirname + "\\index.html";
 lib.get_hash_local(filename,function(result){
     document.querySelector('#test').innerHTML = result; 
 });
-
+*/
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
 document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
     return false;
-}
-let fileItems = document.getElementsByClassName('file-item')
+};
+let fileItems = document.getElementsByClassName('file-item');
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
@@ -43,11 +43,12 @@ for( let i = 0; i < fileItems.length; i++ ) {
         return false;
     };
     
-}
+};
 
 ipcRenderer.on('return-hash', (event, hash) => {
-    console.log( 'Returned hash : ' + hash)
-})
+    console.log( 'Returned hash : ' + hash);
+    return;
+});
 
 ipcRenderer.send('get-hash', "./index.html");
 

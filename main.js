@@ -5,6 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const lib = require("./lib");
 
+app.allowRendererProcessReuse = true;
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -50,7 +51,9 @@ app.on('activate', () => {
 
 ipcMain.on("get-hash" , (event, filePath) => {
   console.log('get hash ' + filePath);
-  let hash = lib.gethash(filePath);
-  event.sender.send('return-hash', hash);
+  lib.get_hash_local(filePath, function(hash){
+    event.sender.send('return-hash', hash);
+  });
   return;
 })
+ 
