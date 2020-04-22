@@ -23,6 +23,8 @@ function get_hash_local(filename, callback) {
 
 }
 
-console.log(get_hash_local(path.join(__dirname , "index.html")));
+get_hash_local(path.join(__dirname , "index.html"), function(callback){
+    console.log(callback)
+});
 
 module.exports.get_hash_local = get_hash_local;

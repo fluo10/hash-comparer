@@ -2,7 +2,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const ipcmain = electron.ipcMain;
+const ipcMain = electron.ipcMain;
 const lib = require("./lib");
 
 function createWindow () {
