@@ -20,8 +20,16 @@ function get_hash_local(filename, callback) {
         }
     })
     //return (hash + ' ' + filename);
+}
+
+function getHash(path){
 
 }
+
+function existPath(path){
+
+}
+
 
 get_hash_local(path.join(__dirname , "index.html"), function(callback){
     console.log(callback)

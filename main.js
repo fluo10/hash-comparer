@@ -56,4 +56,3 @@ ipcMain.on("get-hash" , (event, filePath) => {
   });
   return;
 })
- 

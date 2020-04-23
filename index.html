@@ -12,17 +12,21 @@
     We are using node <script>document.write(process.versions.node)</script>,
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
-    <script src="renderer.js"></script>
     <p id="test"></p>
     <div id="file-list">
-      <div class="file-item">
-        <div></div>
+      <div class="file-item" id="file1">
+        <div>
+          <p><input type="text" name="text1" value="text"></p>
+        </div>
       </div>
-      <div class="file-item">
-        <div></div>
+      <div class="file-item" id="file2">
+        <div>
+          <p><input type="text" name="text2" value="text"></p>
+        </div>
       </div>
     </div>
-
+    
+    <script src="renderer.js"></script>
 
   </body>
 </html>

@@ -10,38 +10,38 @@ lib.get_hash_local(filename,function(result){
 });
 */
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
-document.ondragover = document.ondrop = function(e) {
+/*document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
     return false;
 };
-let fileItems = document.getElementsByClassName('file-item');
+*/
+let fileItems = document.querySelectorAll('.file-item');
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
         remote.ipcRenderer.send('ondragstart', '/path/to/item')
     }?*/
     let fileItem = fileItems[i];
-    fileItem.ondragover = function() {
+//    let fileItem = document.getElementById('file1');
+    fileItem.addEventListener("dragover", (event) => {
         fileItem.classList.add("ondragover");
-        return false;
-    };
+        return;
+    }, false);
     
-    fileItem.ondragleave = function() {
+    fileItem.addEventListener("dragleave", (event) => {
         fileItem.classList.remove("ondragover");
-        return false;
-    };
+    }, false);
     
-    fileItem.ondragend = function() {
+    fileItem.addEventListener("dragend", (event) => {
         fileItem.classList.remove("ondragover");
-        return false;
-    };
+    }, false);
     
-    fileItem.ondrop = function(e) {
-        e.preventDefault();
-        var file = e.dataTransfer.files[0];
-        fileItems[i].innerText = file.path;
-        return false;
-    };
+    fileItem.addEventListener("drop", (event) => {
+        fileItem.classList.remove("ondragover");
+        event.preventDefault();
+        var file = event.dataTransfer.files[0];
+        fileItem.innerText = file.path;
+    }, false);
     
 };
 
