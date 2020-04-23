@@ -10,11 +10,11 @@ lib.get_hash_local(filename,function(result){
 });
 */
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
-/*document.ondragover = document.ondrop = function(e) {
+document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
     return false;
 };
-*/
+
 let fileItems = document.querySelectorAll('.file-item');
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
