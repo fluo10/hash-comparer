@@ -15,13 +15,30 @@ document.ondragover = document.ondrop = function(e) {
     return false;
 };
 
+function dropPath(dataTransfer, inputbox){
+    if (dataTransfer.files.length == 0 ){
+        dataTransfer.items[0].getAsString((str) => {
+            inputbox.setAttribute('value',str);
+        });
+    } else {
+        var file = dataTransfer.files[0];
+       inputbox.setAttribute("value", file.path);
+        //        fileItem.innerText = file.path;
+    }
+
+}
+
 let fileItems = document.querySelectorAll('.file-item');
+let inputboxs;
+let resultboxs; 
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
         remote.ipcRenderer.send('ondragstart', '/path/to/item')
     }?*/
     let fileItem = fileItems[i];
+    inputboxs[i] = fileItem.getElementsByTagName('input')[0];
+    resultbox[i] = fileItem.getElementsByClassName("result")[0];
 //    let fileItem = document.getElementById('file1');
     fileItem.addEventListener("dragover", (event) => {
         fileItem.classList.add("ondragover");
@@ -39,8 +56,8 @@ for( let i = 0; i < fileItems.length; i++ ) {
     fileItem.addEventListener("drop", (event) => {
         fileItem.classList.remove("ondragover");
         event.preventDefault();
-        var file = event.dataTransfer.files[0];
-        fileItem.innerText = file.path;
+        console.log(event.dataTransfer)
+        dropPath(event.dataTransfer, inputbox)
     }, false);
     
 };
