@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    //<link rel="stylesheet" type="text/css" href="style.css">
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link href="css.bootstrap.min.css" rel="stylesheet">
+    
   </head>
   <body>
     <h1>Hello World!</h1>
@@ -13,18 +15,19 @@
     Chrome <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
     <p id="test"></p>
-    <div id="file-list">
-      <div class="file-item" id="file1">
+    <div id="file-list" class="row">
+      <div class="file-item col-xs-6" id="file1">
         <p><input type="text" name="text1" value="text"></p>
       </div>
-      <div class="file-item" id="file2">
+      <div class="file-item col-xs-6" id="file2">
         <div>
           <p><input type="text" name="text2" value="text"></p>
         </div>
       </div>
     </div>
-    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="renderer.js"></script>
-
+    
   </body>
 </html>
