@@ -3,7 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
-const lib = require("./lib");
+const path2hash = require("./path2hash");
 
 app.allowRendererProcessReuse = true;
 function createWindow () {
@@ -51,7 +51,7 @@ app.on('activate', () => {
 
 ipcMain.on("require-hash" , (event, index, path) => {
   console.log('get hash ' + path);
-  lib.getHash(path, function(hash){
+  path2hash.getHash(path, function(hash){
     event.sender.send('return-hash', index, hash);
   });
   return;
