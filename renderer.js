@@ -30,8 +30,8 @@ function dropPath(dataTransfer, inputbox){
 }
 
 let fileItems = document.querySelectorAll('.file-item');
-let inputboxes;
-let resultboxes; 
+let inputboxes = [];
+let resultboxes = []; 
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()

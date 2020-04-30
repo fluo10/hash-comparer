@@ -51,7 +51,7 @@ app.on('activate', () => {
 
 ipcMain.on("require-hash" , (event, index, path) => {
   console.log('get hash ' + path);
-  lib.getHash(filePath, function(hash){
+  lib.getHash(path, function(hash){
     event.sender.send('return-hash', index, hash);
   });
   return;

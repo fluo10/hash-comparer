@@ -11,7 +11,7 @@ var PathType = {
 
 const electron = require('electron');
 const remote = electron.remote;
-function get_hash_local(filename, callback) { 
+function getHashLocal(filename, callback) { 
     shasum = crypto.createHash(algorithm);
     var s = fs.createReadStream(filename);
     var hash;
@@ -78,12 +78,11 @@ function existPath(path, error){
                 error(e);
             });
             break;
-
     }
 }
 
 
-//get_hash_local(path.join(__dirname , "index.html"), function(callback){
+//getHashLocal(path.join(__dirname , "index.html"), function(callback){
 //    console.log(callback)
 //});
 
@@ -92,4 +91,4 @@ getHashRemote(
     (result) => {console.log(result);}
 )
 
-module.exports.get_hash_local = get_hash_local;
+module.exports.getHash = getHash;
