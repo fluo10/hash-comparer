@@ -9,6 +9,7 @@ lib.get_hash_local(filename,function(result){
     document.querySelector('#test').innerHTML = result; 
 });
 */
+let enableAutoDigest = true;
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
 document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
@@ -29,16 +30,16 @@ function dropPath(dataTransfer, inputbox){
 }
 
 let fileItems = document.querySelectorAll('.file-item');
-let inputboxs;
-let resultboxs; 
+let inputboxes;
+let resultboxes; 
 for( let i = 0; i < fileItems.length; i++ ) {
     /*fileItems[i].ondragstart = (event) => {
         event.preventDefault()
         remote.ipcRenderer.send('ondragstart', '/path/to/item')
     }?*/
     let fileItem = fileItems[i];
-    inputboxs[i] = fileItem.getElementsByTagName('input')[0];
-    resultbox[i] = fileItem.getElementsByClassName("result")[0];
+    inputboxes[i] = fileItem.getElementsByTagName('input')[0];
+    resultboxes[i] = fileItem.getElementsByClassName("result")[0];
 //    let fileItem = document.getElementById('file1');
     fileItem.addEventListener("dragover", (event) => {
         fileItem.classList.add("ondragover");
@@ -57,13 +58,23 @@ for( let i = 0; i < fileItems.length; i++ ) {
         fileItem.classList.remove("ondragover");
         event.preventDefault();
         console.log(event.dataTransfer)
-        dropPath(event.dataTransfer, inputbox)
+        dropPath(event.dataTransfer, inputboxes[i])
+        if (enableAutoDigest) {
+            updateDigest(i);
+        }
     }, false);
     
 };
 
-ipcRenderer.on('return-hash', (event, hash) => {
+function updateDigest(index){
+    let inputbox = inputboxes[index];
+    ipcRenderer.send('require-hash', index, inputbox.value);
+}
+
+ipcRenderer.on('return-hash', (event, hash, index) => {
+    let resultbox = resultbox[index];
     console.log( 'Returned hash : ' + hash);
+    resultbox.innerText = hash;
     return;
 });
 

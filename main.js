@@ -49,10 +49,10 @@ app.on('activate', () => {
 // code. You can also put them in separate files and require them here.
 
 
-ipcMain.on("get-hash" , (event, filePath) => {
-  console.log('get hash ' + filePath);
+ipcMain.on("require-hash" , (event, index, path) => {
+  console.log('get hash ' + path);
   lib.getHash(filePath, function(hash){
-    event.sender.send('return-hash', hash);
+    event.sender.send('return-hash', index, hash);
   });
   return;
 })
