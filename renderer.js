@@ -10,6 +10,22 @@ lib.get_hash_local(filename,function(result){
 });
 */
 let enableAutoDigest = true;
+
+let FileStatus = {
+    Blank : 0,
+    Invalid: 1,
+    Missing: 2,
+    Finded: 3,
+    Digesting: 4,
+    Completed: 5
+}
+
+let CompareStatus = {
+    Unset: 0, 
+    Matched : 1,
+    Missmatched : 2
+}
+
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
 document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
@@ -78,10 +94,23 @@ function updateDigest(index){
     ipcRenderer.send('require-hash', index, inputbox.value);
 }
 
+function compareHash(){
+    let resultelement = document.getElementById(result);
+    let resultText = "";
+    let resultStatus;
+    if ((resultboxes[0].value.length == 0) || (resultboxes[1].value.length == 0)){
+        resultText = "ファイルを2つ選択してください"
+
+    }
+    if (resultboxes[0].value == resultboxes[1].value) {
+        resultboxes.textContent = "選択中のファイルは2つとも同じ場所のものです"
+    } else if ()
+}
 ipcRenderer.on('return-hash', (event, index, hash) => {
     let resultbox = resultboxes[index];
     console.log( 'Returned hash : ' + hash);
     resultbox.textContent = hash;
+
     return;
 });
 
