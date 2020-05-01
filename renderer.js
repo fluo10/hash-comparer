@@ -16,15 +16,24 @@ document.ondragover = document.ondrop = function(e) {
     return false;
 };
 
-function dropPath(dataTransfer, inputbox){
+function dropPath(dataTransfer, index){
+    console.log('Start dropPath (' + index + ')')
     if (dataTransfer.files.length == 0 ){
+        console.log("Drop url")
         dataTransfer.items[0].getAsString((str) => {
-            inputbox.setAttribute('value',str);
+            inputboxes[index].setAttribute('value',str);
+            if (enableAutoDigest) {
+                updateDigest(index);
+            }
         });
     } else {
+        console.log('Drop local file');
         var file = dataTransfer.files[0];
-       inputbox.setAttribute("value", file.path);
+       inputboxes[index].setAttribute("value", file.path);
         //        fileItem.innerText = file.path;
+        if (enableAutoDigest) {
+            updateDigest(index);
+        }
     }
 
 }
@@ -58,25 +67,23 @@ for( let i = 0; i < fileItems.length; i++ ) {
         fileItem.classList.remove("ondragover");
         event.preventDefault();
         console.log(event.dataTransfer)
-        dropPath(event.dataTransfer, inputboxes[i])
-        if (enableAutoDigest) {
-            updateDigest(i);
-        }
+        dropPath(event.dataTransfer, i);
     }, false);
     
 };
 
 function updateDigest(index){
+    console.log('Call updateDigest ' + index)
     let inputbox = inputboxes[index];
     ipcRenderer.send('require-hash', index, inputbox.value);
 }
 
-ipcRenderer.on('return-hash', (event, hash, index) => {
-    let resultbox = resultbox[index];
+ipcRenderer.on('return-hash', (event, index, hash) => {
+    let resultbox = resultboxes[index];
     console.log( 'Returned hash : ' + hash);
-    resultbox.innerText = hash;
+    resultbox.textContent = hash;
     return;
 });
 
-ipcRenderer.send('get-hash', "./index.html");
+//ipcRenderer.send('get-hash', "./index.html");
 

@@ -9,7 +9,7 @@ app.allowRendererProcessReuse = true;
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
+    width: 1200,
     height: 600,
     webPreferences: {
       nodeIntegration: true
@@ -50,8 +50,9 @@ app.on('activate', () => {
 
 
 ipcMain.on("require-hash" , (event, index, path) => {
-  console.log('get hash ' + path);
+  console.log('Receive require-hash ' + path);
   path2hash.getHash(path, function(hash){
+    //event.sender.send('return-hash', index, hash);
     event.sender.send('return-hash', index, hash);
   });
   return;
