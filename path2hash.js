@@ -100,11 +100,11 @@ function validatePath(path, callback){
 //    console.log(callback)
 //});
 
-let TestUrl = "https://www.google.com/logos/doodles/2020/stay-home-save-lives-april-23-copy-6753651837108787-law.gif"
-getHashRemote(
-    TestUrl,
-    (result) => {console.log( TestUrl + ' ' + result);}
-)
+//let TestUrl = "https://www.google.com/logos/doodles/2020/stay-home-save-lives-april-23-copy-6753651837108787-law.gif"
+//getHashRemote(
+//    TestUrl,
+//    (result) => {console.log( TestUrl + ' ' + result);}
+//)
 
 module.exports.getHash = getHash;
 module.exports.validatePath = validatePath;
