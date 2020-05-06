@@ -21,11 +21,13 @@ let FileStatus = {
 }
 
 let CompareStatus = {
-    Unset: 0, 
+    Unfilled: 0, 
     Matched : 1,
-    Missmatched : 2
+    Missmatched : 2,
+    Error: 3
 }
 
+let compareStatus = CompareStatus.Unfilled;
 //デフォルトのドラッグアンドドロップの停止（内部的にはクロームなのでファイルを開く）
 document.ondragover = document.ondrop = function(e) {
     e.preventDefault();
@@ -96,16 +98,21 @@ function updateDigest(index){
 
 function compareHash(){
     let resultelement = document.getElementById(result);
-    let resultText = "";
-    let resultStatus;
-    if ((resultboxes[0].value.length == 0) || (resultboxes[1].value.length == 0)){
-        resultText = "ファイルを2つ選択してください"
-
+    let compareResult = "";
+    if ((inputboxes[0].value.length == 0) || (inputboxes[1].value.length == 0)){
+        compareResult = "ファイルを2つ選択してください";
+        compareStatus = CompareStatus.Unfilled;
+    }else if (inputboxes[0].value == inputboxes[1].value) {
+        compareResult = "選択中のファイルは2つとも同じ場所のものです";
+        compareStatus = CompareStatus.Error;
+    } else if (resultboxes[0].textContent == resultboxes[1].textContent){
+        compareResult = "2つのファイルは同じです";
+        compareStatus = CompareStatus.Matched;
+    } else{
+        compareResult = "2つのファイルは一致しませんでした。";
+        compareStatus = CompareStatus.Missmatched;
     }
-    if (resultboxes[0].value == resultboxes[1].value) {
-        resultboxes.textContent = "選択中のファイルは2つとも同じ場所のものです"
-    } else if ()
-}
+} 
 ipcRenderer.on('return-hash', (event, index, hash) => {
     let resultbox = resultboxes[index];
     console.log( 'Returned hash : ' + hash);
