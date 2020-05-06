@@ -4,9 +4,11 @@
   "description": "Compare 2 files by hash.",
   "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "test": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps" 
   },
   "repository": {
     "type": "git",
