@@ -20,8 +20,7 @@
   "homepage": "https://github.com/fwtn/hash-comparer#readme",
   "devDependencies": {
     "electron": "^8.2.5",
-    "electron-builder": "^22.6.0",
-    "request": "^2.88.2"
+    "electron-builder": "^22.6.0"
   },
   "build": {
     "appId": "net.fireturtle.hash-comparer",
@@ -29,5 +28,8 @@
       "target": "portable",
       "icon": "build/icon.ico"
     }
+  },
+  "dependencies": {
+    "request": "^2.88.2"
   }
 }
