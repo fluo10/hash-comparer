@@ -66,7 +66,8 @@ function getHashRemote(url, result){
         }
     );
     */
-    let stream = request({url: item, method: 'GET',  pool: separateReqPool});
+    //let stream = request({url: url, method: 'GET', timeout: 1500, pool: separateReqPool});
+    let stream = request({url: url, method: 'GET', timeout: 1500});
     stream.on('data', (data) =>{
         console.log(data)
         shasum.update(data);
