@@ -27,18 +27,43 @@ request.onupgradeneeded = function(event) {
     configObjectStore.add(configData[i]);
   }
 };
-function GetConfig(){
+export function GetConfig(callback){
   var transaction = db.transaction(["config"]);
   let ofjectStore = transaction.objectStore("config");
-  
+  let dic = {};
   objectStore.openCursor().onsuccess = function(event) {
     let cursor = event.target.result;
     if (cursor){
+      dic[cursor.key] = cursor.value.value;
       cursor.continue();
     } else {
-      
-    }
-  }
-  
+      callback(dic);
+    };
+  };
 };
-function UpdateConfig (dic) {};
+export function updateConfig (dic, callback) {
+  var objectStore = db.transaction(["customers"], "readwrite").objectStore("customers");
+  for (let key in dic) {
+    var request = objectStore.get();
+    request.onerror = function(event) {
+      // エラー処理!
+    };
+    request.onsuccess = function(event) {
+      // 更新したい、古い値を取得します。
+      var data = request.result;
+      // オブジェクト内の値を、希望する値に更新します。
+      data.name = key;
+      data.value = dic[key];
+
+      // 更新したオブジェクトを、データベースに書き戻します。
+      var requestUpdate = objectStore.put(data);
+      requestUpdate.onerror = function(event) {
+       // エラーが発生した場合の処理
+      };
+      requestUpdate.onsuccess = function(event) {
+        console.log( "UpdateConfig success!");
+       // 成功 - データを更新しました!
+      };
+    };
+  };
+};
