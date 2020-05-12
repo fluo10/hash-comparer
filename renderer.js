@@ -9,6 +9,7 @@ lib.get_hash_local(filename,function(result){
     document.querySelector('#test').innerHTML = result; 
 });
 */
+import { updateConfig, getConfig} from './indexeddb.js'
 let enableAutoDigest = true;
 
 let FileStatus = {
