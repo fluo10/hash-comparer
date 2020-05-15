@@ -10,6 +10,14 @@ lib.get_hash_local(filename,function(result){
 });
 */
 
+function fileItem(dropArea, inputBox, resultBox, fileStatus){    
+    this.dropArea = dropArea;
+    this.inputBox = inputBox;
+    this.resultBox = resultBox;
+    this.fileStatus = fileStatus;
+}
+let fileItems = [];
+
 let enableAutoDigest = true;
 
 
@@ -33,7 +41,7 @@ function dropPath(dataTransfer, index){
     if (dataTransfer.files.length == 0 ){
         console.log("Drop url")
         dataTransfer.items[0].getAsString((str) => {
-            inputboxes[index].setAttribute('value',str);
+            fileItems[index].inputBox.setAttribute('value',str);
             if (enableAutoDigest) {
                 updateDigest(index);
             }
@@ -41,7 +49,7 @@ function dropPath(dataTransfer, index){
     } else {
         console.log('Drop local file');
         var file = dataTransfer.files[0];
-       inputboxes[index].setAttribute("value", file.path);
+       fileItems[index].inputBox.setAttribute("value", file.path);
         //        fileItem.innerText = file.path;
         if (enableAutoDigest) {
             updateDigest(index);
@@ -50,56 +58,58 @@ function dropPath(dataTransfer, index){
 
 }
 
-let fileItems = document.querySelectorAll('.file-item');
-let inputboxes = [];
-let resultboxes = []; 
-for( let i = 0; i < fileItems.length; i++ ) {
-    /*fileItems[i].ondragstart = (event) => {
-        event.preventDefault()
-        remote.ipcRenderer.send('ondragstart', '/path/to/item')
-    }?*/
-    let fileItem = fileItems[i];
-    inputboxes[i] = fileItem.getElementsByTagName('input')[0];
-    resultboxes[i] = fileItem.getElementsByClassName("result")[0];
-//    let fileItem = document.getElementById('file1');
-    fileItem.addEventListener("dragover", (event) => {
-        fileItem.classList.add("ondragover");
-        return;
-    }, false);
+window.onload = () => {
+    let dropAreas = document.querySelectorAll('.drop-area');
+    for( let i = 0; i < dropAreas.length; i++ ) {
+        /*fileItems[i].ondragstart = (event) => {
+            event.preventDefault()
+            remote.ipcRenderer.send('ondragstart', '/path/to/item')
+        }?*/
+        let dropArea = dropAreas[i];
+        fileItems[i] = new fileItem(dropArea, 
+            dropArea.getElementsByTagName('input')[0],
+            dropArea.getElementsByClassName("result")[0],
+            FileStatus.Blank)
+        //    let dropArea = document.getElementById('file1');
+        dropArea.addEventListener("dragover", (event) => {
+            dropArea.classList.add("ondragover");
+            return;
+        }, false);
+        
+        dropArea.addEventListener("dragleave", (event) => {
+            dropArea.classList.remove("ondragover");
+        }, false);
+        
+        dropArea.addEventListener("dragend", (event) => {
+            dropArea.classList.remove("ondragover");
+        }, false);
+        
+        dropArea.addEventListener("drop", (event) => {
+            dropArea.classList.remove("ondragover");
+            event.preventDefault();
+            console.log(event.dataTransfer)
+            dropPath(event.dataTransfer, i);
+        }, false);
     
-    fileItem.addEventListener("dragleave", (event) => {
-        fileItem.classList.remove("ondragover");
-    }, false);
-    
-    fileItem.addEventListener("dragend", (event) => {
-        fileItem.classList.remove("ondragover");
-    }, false);
-    
-    fileItem.addEventListener("drop", (event) => {
-        fileItem.classList.remove("ondragover");
-        event.preventDefault();
-        console.log(event.dataTransfer)
-        dropPath(event.dataTransfer, i);
-    }, false);
-    
+    };
 };
 
 function updateDigest(index){
-    console.log('Call updateDigest ' + index)
-    let inputbox = inputboxes[index];
+    console.log('Call updateDigest ' + index);
+    let inputbox = fileItems[index].inputBox;
     ipcRenderer.send('require-hash', index, inputbox.value);
-}
+};
 
 function compareHash(){
     let resultelement = document.getElementById(result);
     let compareResult = "";
-    if ((inputboxes[0].value.length == 0) || (inputboxes[1].value.length == 0)){
+    if ((fileItems[0].inputBox.value.length == 0) || (fileItems[1].inputBox.value.length == 0)){
         compareResult = "ファイルを2つ選択してください";
         compareStatus = CompareStatus.Unfilled;
-    }else if (inputboxes[0].value == inputboxes[1].value) {
+    }else if (fileItems[0].inputBox.value == fileItems[1].inputBox.value) {
         compareResult = "選択中のファイルは2つとも同じ場所のものです";
         compareStatus = CompareStatus.Error;
-    } else if (resultboxes[0].textContent == resultboxes[1].textContent){
+    } else if (fileItems[0].resultBox.textContent == fileItems[1].resultBox.textContent){
         compareResult = "2つのファイルは同じです";
         compareStatus = CompareStatus.Matched;
     } else{
@@ -108,7 +118,7 @@ function compareHash(){
     }
 } 
 ipcRenderer.on('return-hash', (event, index, hash) => {
-    let resultbox = resultboxes[index];
+    let resultbox = fileItems[index].resultBox;
     console.log( 'Returned hash : ' + hash);
     resultbox.textContent = hash;
 

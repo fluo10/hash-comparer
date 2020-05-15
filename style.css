@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
 }
-.file-item {
+.drop-area {
     width: 45%;
     min-width: 300px;
     height: 300px;
