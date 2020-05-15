@@ -1,7 +1,7 @@
 //const fs = require('fs').remote
 const electron = require('electron');
 const remote = electron.remote;
-//const lib = remote.require('./lib');
+const {FileStatus} = remote.require('./path2hash');
 const ipcRenderer = electron.ipcRenderer;
 /*
 const filename = __dirname + "\\index.html";
@@ -9,16 +9,10 @@ lib.get_hash_local(filename,function(result){
     document.querySelector('#test').innerHTML = result; 
 });
 */
+
 let enableAutoDigest = true;
 
-let FileStatus = {
-    Blank : 0,
-    Invalid: 1,
-    Missing: 2,
-    Finded: 3,
-    Digesting: 4,
-    Completed: 5
-}
+
 
 let CompareStatus = {
     Unfilled: 0, 
@@ -123,3 +117,7 @@ ipcRenderer.on('return-hash', (event, index, hash) => {
 
 //ipcRenderer.send('get-hash', "./index.html");
 
+ipcRenderer.on('file-status', (event, index, status) => {
+
+})
+console.log(FileStatus.Blank)

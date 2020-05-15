@@ -10,6 +10,14 @@ var PathType = {
     remote : 1,
     invalid : 2
 }
+let FileStatus = {
+    Blank : 0,
+    Invalid: 1,
+    Missing: 2,
+    Finded: 3,
+    Digesting: 4,
+    Completed: 5
+};
 
 const electron = require('electron');
 const remote = electron.remote;
@@ -108,3 +116,4 @@ function validatePath(path, callback){
 
 module.exports.getHash = getHash;
 module.exports.validatePath = validatePath;
+module.exports.FileStatus = FileStatus;

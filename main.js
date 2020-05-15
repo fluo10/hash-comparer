@@ -4,6 +4,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 const path2hash = require("./path2hash");
+const product=true;
 
 app.allowRendererProcessReuse = true;
 function createWindow () {
@@ -20,7 +21,9 @@ function createWindow () {
   win.loadFile('index.html')
 
   // Open the DevTools.
-//  win.webContents.openDevTools()
+  if (product) {
+    win.webContents.openDevTools()
+  }
 }
 
 // This method will be called when Electron has finished
@@ -57,3 +60,4 @@ ipcMain.on("require-hash" , (event, index, path) => {
   });
   return;
 })
+console.log(path2hash.FileStatus.Blank);
