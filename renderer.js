@@ -114,10 +114,25 @@ ipcRenderer.on('return-hash', (event, index, hash) => {
 
     return;
 });
-
+function updateFileStatus(index, fileStatus){
+    switch (fileStatus) {
+        case FileStatus.Blank :
+            break;
+        case FileStatus.Invalid:
+            break;
+        case FileStatus.Missing:
+            break;
+        case FileStatus.Finded:
+            break;
+        case FileStatus.Digesting:
+            break;
+        case FileStatus.Completed:
+            break;
+    }
+};
 //ipcRenderer.send('get-hash', "./index.html");
 
-ipcRenderer.on('file-status', (event, index, status) => {
-
+ipcRenderer.on('update-file-status', (event, index, fileStatus) => {
+    updateFileStatus(index, fileStatus);
 })
 console.log(FileStatus.Blank)
