@@ -11,3 +11,11 @@
 .ondragover {
     background-color: gray;
 }
+.error {
+    background-color: lightpink;
+    color: darkred;
+}
+.conpleted {
+    background-color: lightgreen;
+    color:darkgreen;
+}

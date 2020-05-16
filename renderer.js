@@ -10,11 +10,11 @@ lib.get_hash_local(filename,function(result){
 });
 */
 
-function fileItem(dropArea, inputBox, resultBox, fileStatus){    
+function FileItem(dropArea, inputBox, status, resultBox){    
     this.dropArea = dropArea;
     this.inputBox = inputBox;
+    this.status = status;
     this.resultBox = resultBox;
-    this.fileStatus = fileStatus;
 }
 let fileItems = [];
 
@@ -66,10 +66,10 @@ window.onload = () => {
             remote.ipcRenderer.send('ondragstart', '/path/to/item')
         }?*/
         let dropArea = dropAreas[i];
-        fileItems[i] = new fileItem(dropArea, 
+        fileItems[i] = new FileItem(dropArea, 
             dropArea.getElementsByTagName('input')[0],
-            dropArea.getElementsByClassName("result")[0],
-            FileStatus.Blank)
+            dropArea.getElementsByClassName('file-status')[0],
+            dropArea.getElementsByClassName("result")[0])
         //    let dropArea = document.getElementById('file1');
         dropArea.addEventListener("dragover", (event) => {
             dropArea.classList.add("ondragover");
@@ -96,6 +96,7 @@ window.onload = () => {
 
 function updateDigest(index){
     console.log('Call updateDigest ' + index);
+    updateFileStatus(index, FileStatus.Digesting)
     let inputbox = fileItems[index].inputBox;
     ipcRenderer.send('require-hash', index, inputbox.value);
 };
@@ -121,22 +122,39 @@ ipcRenderer.on('return-hash', (event, index, hash) => {
     let resultbox = fileItems[index].resultBox;
     console.log( 'Returned hash : ' + hash);
     resultbox.textContent = hash;
-
+    updateFileStatus(index, FileStatus.Completed)
     return;
 });
 function updateFileStatus(index, fileStatus){
+    let status = fileItems[index].status;
     switch (fileStatus) {
-        case FileStatus.Blank :
+        case FileStatus.Blank:
+            status.textContent = "パスもしくはURLを入力してください";
+            status.classList.remove("error");
+            status.classList.remove("completed");
             break;
         case FileStatus.Invalid:
+            status.textContent = "入力された文字列は形式が間違っています";
+            status.classList.add("error");
+            status.classList.remove("completed");
             break;
         case FileStatus.Missing:
+            status.textContent = "ファイルが取得できませんでした。";
+            status.classList.add("error");
+            status.classList.remove("completed");
             break;
-        case FileStatus.Finded:
-            break;
+//      ダイジェストが想定よりもサクッと出たので、ファイル入力時にダイジェストまで行うため、このステータスは未使用
+//        case FileStatus.Finded:
+//            break;
         case FileStatus.Digesting:
+            status.textContent = "ダイジェスト中です";
+            status.classList.remove("error");
+            status.classList.remove("completed");
             break;
         case FileStatus.Completed:
+            status.textContent = "完了しました";
+            status.classList.remove("error");
+            status.classList.add("completed");
             break;
     }
 };
